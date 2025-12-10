@@ -311,6 +311,9 @@ export default function createApp() {
       const metadata = generateProtectedResourceMetadata({
         authServerUrls: env.AUTH0_DOMAIN ? [`https://${env.AUTH0_DOMAIN}`] : [],
         resourceUrl: `${baseUrl}/mcp`,
+        additionalMetadata: {
+          scopes_supported: ['openid', 'profile', 'email']
+        }
       });
       return c.json(metadata, {
         headers: {

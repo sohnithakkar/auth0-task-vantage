@@ -10,7 +10,7 @@ AI-powered chat interface for Task Vantage, built with [LlamaIndex](https://gith
 
 ### AI Chat Interface
 - **Interactive Web UI**: Modern chat interface for conversing with the AI agent
-- **OpenAI GPT-4o Integration**: Powered by OpenAI's latest language model
+- **Google Gemini Integration**: Powered by Google's Gemini 2.0 Flash model
 - **Real-time Communication**: RESTful API endpoints for seamless chat functionality
 - **Session Persistence**: Maintains conversation context across requests
 
@@ -30,7 +30,7 @@ AI-powered chat interface for Task Vantage, built with [LlamaIndex](https://gith
 
 ### Required Variables
 
-* `OPENAI_API_KEY` - OpenAI API key for GPT-4o model - **Required for AI functionality**
+* `GOOGLE_API_KEY` - Google API key for Gemini model - **Required for AI functionality**
 * `AUTH0_DOMAIN` - Your Auth0 domain (e.g., your-domain.auth0.com) - **Shared across all services**
 
 ### Auth0 Variables (Optional - enables authentication)
@@ -66,14 +66,14 @@ flowchart TB
     end
 
     subgraph "External Services"
-        OpenAI[OpenAI GPT-4o]
+        Gemini[Google Gemini]
         MCP[Task Vantage MCP]
         Auth0[Auth0 Identity]
     end
 
     Web --> API
     API --> LlamaIndex
-    LlamaIndex --> OpenAI
+    LlamaIndex --> Gemini
     LlamaIndex --> MCP
     Web --> Auth
     Auth --> Auth0
@@ -82,7 +82,7 @@ flowchart TB
     classDef external fill:#FADBD8,stroke:#E74C3C,color:#641E16,stroke-width:2px
 
     class Web,API,LlamaIndex,Auth agent
-    class OpenAI,MCP,Auth0 external
+    class Gemini,MCP,Auth0 external
 ```
 
 ### Component Flow
@@ -91,7 +91,7 @@ flowchart TB
 3. **Chat API**: Processes messages and manages conversation context
 4. **LlamaIndex Agent**: Orchestrates AI responses and tool execution
 5. **MCP Integration**: Dynamically loads and executes Task Vantage tools
-6. **OpenAI API**: Provides language model inference via GPT-4o
+6. **Google Gemini API**: Provides language model inference via Gemini 2.0 Flash
 
 ## 🛠️ Available Tools
 
@@ -118,7 +118,7 @@ npm install
 
 # Configure environment
 cp .env.example .env
-# Edit .env with your OPENAI_API_KEY and Auth0 credentials
+# Edit .env with your GOOGLE_API_KEY and Auth0 credentials
 
 # Start agent service
 npm run dev:agent
@@ -218,10 +218,10 @@ Agent: "I've updated task #123 status to 'in progress'."
 
 ### Common Issues
 
-1. **Missing OpenAI API Key**
+1. **Missing Google API Key**
    ```
-   Error: OpenAI API key not configured
-   Solution: Set OPENAI_API_KEY in your .env file
+   Error: Google API key not configured
+   Solution: Set GOOGLE_API_KEY in your .env file
    ```
 
 2. **MCP Server Connection Failed**
@@ -272,7 +272,7 @@ AGENT_BASE_URL=https://agent.taskvantage.example.com
 MCP_BASE_URL=https://mcp.taskvantage.example.com
 
 # Keep other variables the same
-OPENAI_API_KEY=sk-your-production-key
+GOOGLE_API_KEY=your-google-api-key
 AUTH0_DOMAIN=your-domain.auth0.com
 # ... etc
 ```

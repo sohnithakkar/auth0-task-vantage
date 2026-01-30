@@ -6,7 +6,7 @@ Task Vantage Demo is a reference implementation showcasing a modern task managem
 
 - 🚀 **REST API** - Built with [Hono](https://hono.dev/) and secured with Auth0 JWT validation
 - 🔌 **MCP Server** - Model Context Protocol server using [Hono](https://hono.dev/) + [mcp-handler](https://www.npmjs.com/package/mcp-handler) with Custom Token Exchange
-- 🤖 **Agent Service** - AI agent with web-based chat interface using [LlamaIndex](https://github.com/jerryjliu/llama_index) and OpenAI
+- 🤖 **Agent Service** - AI agent with web-based chat interface using [LlamaIndex](https://github.com/jerryjliu/llama_index) and Google Gemini
 - 📱 **Web Application** - Modern web interface for direct project and task management
 
 **User Access Points:**
@@ -30,7 +30,7 @@ Task Vantage Demo is a reference implementation showcasing a modern task managem
 src/
 ├── 🚀 api/          # REST API (Hono + Auth0)
 ├── 🔌 mcp/          # MCP Server (Hono + mcp-handler + CTE)
-├── 🤖 agent/        # Agent Service (Hono + LlamaIndex + OpenAI)
+├── 🤖 agent/        # Agent Service (Hono + LlamaIndex + Gemini)
 ├── 📱 webapp/       # Web Application (Hono + Auth0 OAuth2)
 └── 🛠️ utils/        # Shared utilities (logging, etc.)
 
@@ -47,7 +47,7 @@ vercel/              # Deployment configurations
 - **Node.js 22+**
 - **npm** (or compatible package manager)
 - **Auth0 account** (for authentication)
-- **OpenAI API key** (for AI agent functionality)  
+- **Google API key** (for AI agent functionality)  
 
 ### Installation
 
@@ -59,7 +59,7 @@ vercel/              # Deployment configurations
 2. **Configure environment:**
    ```bash
    cp .env.example .env
-   # Edit .env with your Auth0 and OpenAI credentials
+   # Edit .env with your Auth0 and Google API credentials
    ```
 
 3. **Start all services:**
@@ -205,7 +205,7 @@ flowchart TB
         direction TB
 
         WebApp["📱 Task Vantage Web<br/>(Hono + Auth0 + Session)"]:::webapp
-        Agent["🤖 Task Vantage Agent<br/>(LlamaIndex + OpenAI)"]:::agent
+        Agent["🤖 Task Vantage Agent<br/>(LlamaIndex + Gemini)"]:::agent
         MCP["🔌 Task Vantage MCP<br/>(Hono + mcp-handler + CTE)"]:::mcp
         API["🚀 Task Vantage API<br/>(Hono + JWT validation)"]:::api
 
@@ -215,7 +215,7 @@ flowchart TB
 %% External services
     subgraph External["External Services"]
         Auth0["🔐 Auth0<br/>(Identity Provider)"]:::auth
-        OpenAI["🧠 OpenAI<br/>(LLM Provider)"]:::openai
+        Gemini["🧠 Google Gemini<br/>(LLM Provider)"]:::gemini
     end
 
 %% User flows
@@ -230,7 +230,7 @@ flowchart TB
     Agent --> MCP
     MCP --> API
     API --> Store
-    Agent --> OpenAI
+    Agent --> Gemini
 
 %% Authentication flows
     WebApp --> Auth0
@@ -245,7 +245,7 @@ flowchart TB
     classDef api fill:#FCF3CF,stroke:#F1C40F,color:#7D6608,stroke-width:2px
     classDef store fill:#D5F5E3,stroke:#27AE60,color:#145A32,stroke-width:2px
     classDef auth fill:#FADBD8,stroke:#E74C3C,color:#641E16,stroke-width:2px
-    classDef openai fill:#E8F5E8,stroke:#28A745,color:#155724,stroke-width:2px
+    classDef gemini fill:#E8F5E8,stroke:#28A745,color:#155724,stroke-width:2px
 ```
 
 ### Unified Hono Architecture
@@ -272,7 +272,7 @@ flowchart TB
         subgraph Agent ["🤖 Task Vantage Agent"]
             AG1["Hono Framework"]
             AG2["@auth0/auth0-hono"]
-            AG3["LlamaIndex + @llamaindex/openai"]
+            AG3["LlamaIndex + @llamaindex/google"]
             AG4["Session Management"]
         end
 
@@ -292,7 +292,7 @@ flowchart TB
 
         subgraph External ["🌐 External Services"]
             EX1["Auth0 Identity Provider"]
-            EX2["OpenAI LLM API"]
+            EX2["Google Gemini API"]
         end
     end
 

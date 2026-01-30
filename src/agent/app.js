@@ -42,7 +42,7 @@ export default function createAgentApp() {
     authorizationParams: {
       audience: env.MCP_AUTH0_AUDIENCE,
     },
-    scope: 'openid profile email'
+    scope: 'openid profile email projects:read projects:write tasks:read tasks:write'
   }));
 
   // Chat API endpoint

@@ -36,6 +36,13 @@ export async function createMCPClient(accessToken = null) {
       };
     }
 
+    // Add custom fetch to set required Accept header for MCP protocol
+    transportOptions.requestInit = {
+      headers: {
+        'Accept': 'application/json, text/event-stream'
+      }
+    };
+
     transport = new StreamableHTTPClientTransport(new URL(mcpUrl), transportOptions);
 
     client = new Client({

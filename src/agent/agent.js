@@ -1,5 +1,5 @@
 import * as env from './env.js';
-import { openai } from "@llamaindex/openai";
+import { gemini, GEMINI_MODEL } from "@llamaindex/google";
 import { agent } from "@llamaindex/workflow";
 import { createTools } from './tools.js';
 import { getMemory } from './memory.js';
@@ -63,13 +63,37 @@ const createUserContext = (auth) => ({
   userType: auth.userType
 });
 
-const extractResponseText = (response) =>
-  response?.data?.message?.content ||
-  response?.data?.content ||
-  response?.data ||
-  response?.message?.content ||
-  response?.content ||
-  String(response);
+const extractResponseText = (response) => {
+  // Try to get structured content first
+  const content = response?.data?.message?.content ||
+    response?.data?.content ||
+    response?.data ||
+    response?.message?.content ||
+    response?.content ||
+    String(response);
+
+  if (typeof content !== 'string') return content;
+
+  // Remove repeated content (Gemini concatenates text from each agent step)
+  // Try to find the shortest repeating unit
+  const text = content.trim();
+  for (let len = 1; len <= text.length / 2; len++) {
+    const unit = text.slice(0, len);
+    const repeated = unit.repeat(Math.ceil(text.length / len)).slice(0, text.length);
+    if (repeated === text) {
+      return unit.trim();
+    }
+  }
+
+  // Also handle case where repetition has slight variations or extra whitespace
+  // Check if string contains exact duplicate halves
+  const half = Math.floor(text.length / 2);
+  if (text.length > 50 && text.slice(0, half).trim() === text.slice(half).trim()) {
+    return text.slice(0, half).trim();
+  }
+
+  return text;
+};
 
 async function handleUserCheck(context) {
   const auth = await getAuth(context);
@@ -150,7 +174,7 @@ export async function handleChat(context) {
     toolsCleanup = cleanup;
 
     // Create agent with tools and memory
-    const llm = openai({ model: "gpt-4o" });
+    const llm = gemini({ model: GEMINI_MODEL.GEMINI_2_0_FLASH });
     const requestAgent = agent({
       name: "assistant",
       tools,

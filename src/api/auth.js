@@ -65,14 +65,22 @@ export function getAuth(context) {
     const userId = typeof user.sub === 'string' && user.sub ? user.sub : 'anonymous';
     const orgId = (typeof user.org_id === 'string' && user.org_id) || env.API_DEFAULT_ORG;
 
-    // The scope might be directly on the token payload, not nested in a user object
+    // Check both 'scope' claim and 'permissions' array (Auth0 RBAC uses permissions array)
     const scopeValue = user.scope;
-    
-    const scopes = Array.isArray(scopeValue)
+    const permissionsValue = user.permissions;
+
+    // Parse scope claim (space-separated string or array)
+    const scopeArray = Array.isArray(scopeValue)
         ? scopeValue
         : typeof scopeValue === 'string'
             ? scopeValue.split(' ').filter(Boolean)
             : [];
+
+    // Parse permissions array (Auth0 RBAC)
+    const permissionsArray = Array.isArray(permissionsValue) ? permissionsValue : [];
+
+    // Combine both sources of permissions
+    const scopes = [...new Set([...scopeArray, ...permissionsArray])];
 
     return { userId, orgId, scopes, user };
 }

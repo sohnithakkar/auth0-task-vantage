@@ -16,6 +16,7 @@
     "dev:all": "npm-run-all --parallel dev:api dev:mcp dev:agent dev:webapp open:webapp open:agent",
     "open:agent": "open http://localhost:3000",
     "open:webapp": "open http://localhost:3001",
+    "stop:all": "lsof -ti :8787 -ti :8080 -ti :3000 -ti :3001 | xargs kill 2>/dev/null || echo 'No services running'",
     "start": "npm run dev:all",
     "deploy:api": "cp -r src vercel/api/ && cp package*.json vercel/api/ && mkdir -p vercel/api/public && cp src/api/public/favicon.ico vercel/api/public/ && cd vercel/api && vercel link --project task-vantage-api --yes && vercel --prod --yes",
     "deploy:mcp": "cp -r src vercel/mcp/ && cp package*.json vercel/mcp/ && mkdir -p vercel/mcp/public && cp src/mcp/public/favicon.ico vercel/mcp/public/ && cd vercel/mcp && vercel link --project task-vantage-mcp --yes && vercel --prod --yes",

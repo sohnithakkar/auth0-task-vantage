@@ -144,7 +144,7 @@ MCP_BASE_URL=https://mcp.taskvantage.example.com
 - `AGENT_AUTH0_CLIENT_ID`
 - `AGENT_AUTH0_CLIENT_SECRET`
 - `AGENT_SESSION_SECRET`
-- `OPENAI_API_KEY`
+- `GOOGLE_API_KEY`
 - `LOG_VERBOSE`
 
 **Web App Service (`task-vantage-webapp`)**:

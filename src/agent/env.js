@@ -25,6 +25,12 @@ export const AGENT_AUTH0_CLIENT_ID = str(process.env.AGENT_AUTH0_CLIENT_ID);
 export const AGENT_AUTH0_CLIENT_SECRET = str(process.env.AGENT_AUTH0_CLIENT_SECRET);
 export const AGENT_SESSION_SECRET = str(process.env.AGENT_SESSION_SECRET);
 
+// LLM configuration (LiteLLM via OpenAI-compatible API)
+// Supports LITELLM_KEY from shell environment or OPENAI_API_KEY from .env
+export const OPENAI_API_KEY = str(process.env.LITELLM_KEY || process.env.OPENAI_API_KEY);
+export const OPENAI_BASE_URL = str(process.env.OPENAI_BASE_URL);
+export const OPENAI_MODEL = str(process.env.OPENAI_MODEL, 'gpt-4o');
+
 // Auth detection following pattern from other services
 export const AUTH_ENABLED = !!(AUTH0_DOMAIN &&
   AGENT_AUTH0_CLIENT_ID &&

@@ -1,5 +1,5 @@
 import * as env from './env.js';
-import { gemini, GEMINI_MODEL } from "@llamaindex/google";
+import { openai } from "@llamaindex/openai";
 import { agent } from "@llamaindex/workflow";
 import { createTools } from './tools.js';
 import { getMemory } from './memory.js';
@@ -173,8 +173,12 @@ export async function handleChat(context) {
     const { tools, metadata: toolsMetadata, cleanup } = await createTools(auth.accessToken);
     toolsCleanup = cleanup;
 
-    // Create agent with tools and memory
-    const llm = gemini({ model: GEMINI_MODEL.GEMINI_2_0_FLASH });
+    // Create agent with tools and memory (LiteLLM via OpenAI-compatible API)
+    const llm = openai({
+      model: env.OPENAI_MODEL,
+      apiKey: env.OPENAI_API_KEY,
+      ...(env.OPENAI_BASE_URL && { baseURL: env.OPENAI_BASE_URL }),
+    });
     const requestAgent = agent({
       name: "assistant",
       tools,

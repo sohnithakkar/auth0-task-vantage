@@ -45,7 +45,7 @@
     "@auth0/auth0-api-js": "^1.2.1",
     "@auth0/auth0-hono": "^1.2.5",
     "@hono/node-server": "^1.19.3",
-    "@llamaindex/google": "^0.4.0",
+    "@llamaindex/openai": "^0.4.0",
     "@llamaindex/workflow": "^1.1.22",
     "@modelcontextprotocol/sdk": "^1.17.5",
     "dotenv": "^17.2.2",
